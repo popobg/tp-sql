@@ -21,8 +21,8 @@ values ('A01', 'Perceuse P1', 74.99, 1),
 ('F03', 'Coffret mêches plates', 6.25, 2),
 ('F04', 'Fraises d''encastrement', 8.14, 2);
 
-INSERT INTO bon_commande (date_cmde, delai, ID_fou)
-values ('2024-10-22', 3, 1);
+INSERT INTO bon_commande
+values (1, '2024-10-22', 3, 1);
 
 INSERT INTO compo (qte, ID_art, ID_bon)
 values (3, 1, 1), (4, 5, 1), (1, 7, 1);

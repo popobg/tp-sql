@@ -102,10 +102,18 @@ INNER JOIN article ON compo.ID_art = article.ID
 GROUP BY MONTH(bon.DATE_CMDE), YEAR(bon.DATE_CMDE)
 ORDER BY YEAR(bon.DATE_CMDE);
 
+-- Sélectionner les bons de commandes sans article.
+SELECT * FROM bon
+LEFT JOIN compo ON bon.ID = compo.ID_BON
+WHERE compo.ID_BON IS NULL;
 
 -- Calculer le prix moyen des bons de commande par fournisseur.
--- SELECT bon.*, AVG(article.prix * compo.QTE) AS 'Total prix articles' FROM bon
--- INNER JOIN fournisseur fou ON bon.ID_FOU = fou.ID
--- INNER JOIN compo ON bon.ID = compo.ID_BON
--- INNER JOIN article ON compo.ID_art = article.ID
--- GROUP BY bon.ID_FOU;
+SELECT fou.NOM, AVG(synthese.total) AS 'Total prix articles' FROM fournisseur fou
+INNER JOIN bon ON bon.ID_FOU = fou.ID
+INNER JOIN (
+    SELECT bon.ID AS bon_ID, SUM(art.PRIX * compo.QTE) AS total FROM bon
+    JOIN compo ON bon.ID = compo.ID_BON
+    JOIN article art ON compo.ID_art = art.ID
+    GROUP BY bon_ID
+) AS synthese ON bon.ID = synthese.bon_ID
+GROUP BY fou.NOM;
